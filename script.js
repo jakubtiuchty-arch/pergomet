@@ -542,4 +542,189 @@ function highlightTestimonial() {
 // Uncomment to enable auto-highlight
 // setInterval(highlightTestimonial, 3000);
 
+// ===== Pergola Calculator =====
+const calculatorConfig = {
+    basePrice: {
+        klasyczna: 12900,
+        bioklimatyczna: 24900,
+        wolnostojaca: 18500
+    },
+    pricePerSqm: {
+        klasyczna: 850,
+        bioklimatyczna: 1450,
+        wolnostojaca: 1100
+    },
+    extras: {
+        led: 2500,
+        heating: 4500,
+        sides: 8000,
+        blinds: 3500
+    },
+    minArea: 6 // m² included in base price
+};
+
+function initCalculator() {
+    const typeInputs = document.querySelectorAll('input[name="pergola-type"]');
+    const widthInput = document.getElementById('calc-width');
+    const depthInput = document.getElementById('calc-depth');
+    const extraInputs = document.querySelectorAll('input[name="extra"]');
+    const dimButtons = document.querySelectorAll('.dim-btn');
+    const resetButton = document.getElementById('reset-calculator');
+
+    if (!widthInput || !depthInput) return;
+
+    // Type selection
+    typeInputs.forEach(input => {
+        input.addEventListener('change', updateCalculation);
+    });
+
+    // Dimension inputs
+    widthInput.addEventListener('input', updateCalculation);
+    depthInput.addEventListener('input', updateCalculation);
+
+    // Dimension buttons
+    dimButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetId = btn.dataset.target;
+            const input = document.getElementById(targetId);
+            const step = parseFloat(input.step) || 0.5;
+            const min = parseFloat(input.min) || 2;
+            const max = parseFloat(input.max) || 12;
+            let value = parseFloat(input.value) || min;
+
+            if (btn.classList.contains('plus')) {
+                value = Math.min(value + step, max);
+            } else {
+                value = Math.max(value - step, min);
+            }
+
+            input.value = value;
+            updateCalculation();
+        });
+    });
+
+    // Extra options
+    extraInputs.forEach(input => {
+        input.addEventListener('change', updateCalculation);
+    });
+
+    // Reset button
+    if (resetButton) {
+        resetButton.addEventListener('click', resetCalculator);
+    }
+
+    // Initial calculation
+    updateCalculation();
+}
+
+function updateCalculation() {
+    const selectedType = document.querySelector('input[name="pergola-type"]:checked');
+    const widthInput = document.getElementById('calc-width');
+    const depthInput = document.getElementById('calc-depth');
+    const extraInputs = document.querySelectorAll('input[name="extra"]:checked');
+
+    if (!selectedType || !widthInput || !depthInput) return;
+
+    const type = selectedType.value;
+    const width = parseFloat(widthInput.value) || 4;
+    const depth = parseFloat(depthInput.value) || 3;
+    const area = width * depth;
+
+    // Calculate base price
+    let totalPrice = calculatorConfig.basePrice[type];
+
+    // Add price for extra area (above minimum included)
+    const extraArea = Math.max(0, area - calculatorConfig.minArea);
+    totalPrice += extraArea * calculatorConfig.pricePerSqm[type];
+
+    // Add extras
+    const selectedExtras = [];
+    extraInputs.forEach(input => {
+        totalPrice += calculatorConfig.extras[input.value];
+        selectedExtras.push(getExtraName(input.value));
+    });
+
+    // Update UI
+    updateCalculatorUI(type, width, depth, area, selectedExtras, totalPrice);
+}
+
+function getExtraName(value) {
+    const names = {
+        led: 'Oświetlenie LED',
+        heating: 'System grzewczy',
+        sides: 'Zabudowa boczna',
+        blinds: 'Rolety ZIP'
+    };
+    return names[value] || value;
+}
+
+function getTypeName(type) {
+    const names = {
+        klasyczna: 'Klasyczna',
+        bioklimatyczna: 'Bioklimatyczna',
+        wolnostojaca: 'Wolnostojąca'
+    };
+    return names[type] || type;
+}
+
+function updateCalculatorUI(type, width, depth, area, extras, price) {
+    // Update area display
+    const areaDisplay = document.getElementById('calc-area');
+    if (areaDisplay) {
+        areaDisplay.textContent = `${area.toFixed(1)} m²`;
+    }
+
+    // Update summary
+    const summaryType = document.getElementById('summary-type');
+    const summaryDimensions = document.getElementById('summary-dimensions');
+    const summaryArea = document.getElementById('summary-area');
+    const extrasSummary = document.getElementById('extras-summary');
+    const totalPrice = document.getElementById('calc-total-price');
+
+    if (summaryType) summaryType.textContent = getTypeName(type);
+    if (summaryDimensions) summaryDimensions.textContent = `${width}m × ${depth}m`;
+    if (summaryArea) summaryArea.textContent = `${area.toFixed(1)} m²`;
+
+    if (extrasSummary) {
+        const extrasText = extras.length > 0 ? extras.join(', ') : '—';
+        extrasSummary.querySelector('span:last-child').textContent = extrasText;
+    }
+
+    if (totalPrice) {
+        totalPrice.textContent = formatPrice(Math.round(price));
+    }
+}
+
+function formatPrice(price) {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+}
+
+function resetCalculator() {
+    // Reset type
+    const klasycznaInput = document.querySelector('input[name="pergola-type"][value="klasyczna"]');
+    if (klasycznaInput) {
+        klasycznaInput.checked = true;
+        // Update active state
+        document.querySelectorAll('.calc-option').forEach(opt => opt.classList.remove('active'));
+        klasycznaInput.closest('.calc-option').classList.add('active');
+    }
+
+    // Reset dimensions
+    const widthInput = document.getElementById('calc-width');
+    const depthInput = document.getElementById('calc-depth');
+    if (widthInput) widthInput.value = 4;
+    if (depthInput) depthInput.value = 3;
+
+    // Reset extras
+    document.querySelectorAll('input[name="extra"]').forEach(input => {
+        input.checked = false;
+    });
+
+    // Recalculate
+    updateCalculation();
+}
+
+// Initialize calculator when DOM is ready
+document.addEventListener('DOMContentLoaded', initCalculator);
+
 console.log('PergoMet landing page loaded successfully!');
