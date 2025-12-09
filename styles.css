@@ -391,15 +391,13 @@ h1, h2, h3, h4, h5, h6 {
     animation: fadeInUp 0.8s ease 0.2s both;
 }
 
-.image-placeholder {
-    border-radius: var(--radius-xl);
-    overflow: hidden;
-    box-shadow: var(--shadow-xl);
-}
-
-.image-placeholder svg {
+.hero-img {
     width: 100%;
     height: auto;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
+    object-fit: cover;
+    max-height: 500px;
 }
 
 .scroll-indicator {
