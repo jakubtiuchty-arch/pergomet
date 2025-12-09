@@ -252,7 +252,7 @@ function showNotification(message, type = 'info') {
         right: 20px;
         max-width: 400px;
         padding: 1rem 1.5rem;
-        background: ${type === 'success' ? '#4caf50' : type === 'error' ? '#e53935' : '#2196f3'};
+        background: ${type === 'success' ? '#b87333' : type === 'error' ? '#e53935' : '#495057'};
         color: white;
         border-radius: 8px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
@@ -360,7 +360,7 @@ galleryItems.forEach(item => {
                 <div style="
                     max-width: 80%;
                     max-height: 70%;
-                    background: #f1f8e9;
+                    background: #f1f3f4;
                     border-radius: 12px;
                     overflow: hidden;
                 ">
@@ -529,7 +529,7 @@ function highlightTestimonial() {
     testimonialCards.forEach((card, index) => {
         if (index === testimonialIndex) {
             card.style.transform = 'scale(1.02)';
-            card.style.boxShadow = '0 10px 30px rgba(139, 195, 74, 0.2)';
+            card.style.boxShadow = '0 10px 30px rgba(184, 115, 51, 0.2)';
         } else {
             card.style.transform = '';
             card.style.boxShadow = '';
