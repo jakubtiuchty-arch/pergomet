@@ -889,6 +889,7 @@ export default function HomePage() {
           </div>
           <div className="footer-bottom">
             <p>&copy; 2024 Alukomfort. Wszystkie prawa zastrzeżone.</p>
+            <p className="footer-credit">Crafted with ☕ by <a href="https://www.qba.dev" target="_blank" rel="noopener noreferrer">&lt;qba.dev/&gt;</a></p>
           </div>
         </div>
       </footer>

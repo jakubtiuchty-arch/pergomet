@@ -1648,6 +1648,22 @@ section {
     font-size: var(--font-size-sm);
 }
 
+.footer-credit {
+    margin-top: var(--spacing-sm);
+    color: var(--gray-500);
+    font-size: 0.75rem;
+}
+
+.footer-credit a {
+    color: var(--accent-light);
+    font-weight: 500;
+    transition: color var(--transition-fast);
+}
+
+.footer-credit a:hover {
+    color: var(--accent-main);
+}
+
 /* ===== Responsive Design ===== */
 @media (max-width: 1024px) {
     .hero .container {
