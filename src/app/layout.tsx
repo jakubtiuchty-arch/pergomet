@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import '@/styles/globals.css'
 
 export const metadata: Metadata = {
-  title: 'PergoMet - Nowoczesne Pergole Metalowe | Sprzedaż i Montaż',
-  description: 'PergoMet - Nowoczesne pergole metalowe dla Twojego domu. Sprzedaż i profesjonalny montaż pergol aluminiowych i stalowych.',
+  title: 'Alukomfort - Nowoczesne Pergole Metalowe | Sprzedaż i Montaż',
+  description: 'Alukomfort - Nowoczesne pergole metalowe dla Twojego domu. Sprzedaż i profesjonalny montaż pergol aluminiowych i stalowych.',
   keywords: 'pergole, pergole metalowe, pergole aluminiowe, pergole ogrodowe, taras, montaż pergol',
 }
 

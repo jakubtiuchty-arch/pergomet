@@ -7,6 +7,54 @@ export default function HomePage() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null)
   const [isNightMode, setIsNightMode] = useState(false)
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null)
+  
+  // Calculator state
+  const [pergolaType, setPergolaType] = useState<'klasyczna' | 'bioklimatyczna' | 'wolnostojaca'>('klasyczna')
+  const [calcWidth, setCalcWidth] = useState(4)
+  const [calcDepth, setCalcDepth] = useState(3)
+  const [extras, setExtras] = useState<string[]>([])
+
+  // Calculator prices
+  const basePrices = {
+    klasyczna: 12900,
+    bioklimatyczna: 24900,
+    wolnostojaca: 18500
+  }
+  
+  const pricePerSqm = {
+    klasyczna: 215,
+    bioklimatyczna: 350,
+    wolnostojaca: 280
+  }
+  
+  const extraPrices: Record<string, number> = {
+    led: 2500,
+    heating: 4500,
+    sides: 8000,
+    blinds: 3500
+  }
+
+  const calcArea = calcWidth * calcDepth
+  const basePrice = basePrices[pergolaType]
+  const areaPrice = calcArea * pricePerSqm[pergolaType]
+  const extrasTotal = extras.reduce((sum, extra) => sum + (extraPrices[extra] || 0), 0)
+  const totalPrice = basePrice + areaPrice + extrasTotal
+
+  const toggleExtra = (extra: string) => {
+    setExtras(prev => 
+      prev.includes(extra) 
+        ? prev.filter(e => e !== extra)
+        : [...prev, extra]
+    )
+  }
+
+  const resetCalculator = () => {
+    setPergolaType('klasyczna')
+    setCalcWidth(4)
+    setCalcDepth(3)
+    setExtras([])
+  }
 
   // Navbar scroll effect
   useEffect(() => {
@@ -83,7 +131,7 @@ export default function HomePage() {
         <div className="container">
           <a href="#" className="logo">
             <span className="logo-icon">⌂</span>
-            PergoMet
+            Alukomfort
           </a>
           <button
             className={`nav-toggle ${isMenuOpen ? 'active' : ''}`}
@@ -98,6 +146,7 @@ export default function HomePage() {
             <li><a href="#home" onClick={() => setIsMenuOpen(false)}>Start</a></li>
             <li><a href="#about" onClick={() => setIsMenuOpen(false)}>O nas</a></li>
             <li><a href="#products" onClick={() => setIsMenuOpen(false)}>Oferta</a></li>
+            <li><a href="#calculator" onClick={() => setIsMenuOpen(false)}>Kalkulator</a></li>
             <li><a href="#gallery" onClick={() => setIsMenuOpen(false)}>Realizacje</a></li>
             <li><a href="#benefits" onClick={() => setIsMenuOpen(false)}>Korzyści</a></li>
             <li><a href="#testimonials" onClick={() => setIsMenuOpen(false)}>Opinie</a></li>
@@ -120,7 +169,7 @@ export default function HomePage() {
             </h1>
             <p className="hero-subtitle">
               Stwórz elegancką przestrzeń wypoczynkową na swoim tarasie.
-              Profesjonalna sprzedaż i montaż pergol metalowych najwyższej jakości.
+              Profesjonalna sprzedaż i montaż pergol aluminiowych najwyższej jakości.
             </p>
             <div className="hero-buttons">
               <a href="#contact" className="btn btn-primary">Bezpłatna wycena</a>
@@ -150,8 +199,8 @@ export default function HomePage() {
         <div className="container">
           <div className="section-header">
             <span className="section-tag">O nas</span>
-            <h2 className="section-title">Dlaczego PergoMet?</h2>
-            <p className="section-subtitle">Jesteśmy liderem w branży pergol metalowych z 12-letnim doświadczeniem</p>
+            <h2 className="section-title">Dlaczego Alukomfort?</h2>
+            <p className="section-subtitle">Jesteśmy liderem w branży pergol aluminiowych z 12-letnim doświadczeniem</p>
           </div>
           <div className="about-grid">
             <div className="about-card">
@@ -303,6 +352,231 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Calculator Section */}
+      <section className="calculator" id="calculator">
+        <div className="container">
+          <div className="section-header">
+            <span className="section-tag">Kalkulator</span>
+            <h2 className="section-title">Oblicz cenę pergoli</h2>
+            <p className="section-subtitle">Uzyskaj szybką wycenę dostosowaną do Twoich potrzeb</p>
+          </div>
+          <div className="calculator-wrapper">
+            <div className="calculator-form">
+              <div className="calc-step">
+                <div className="calc-step-number">1</div>
+                <div className="calc-step-content">
+                  <h3>Wybierz typ pergoli</h3>
+                  <div className="calc-options pergola-types">
+                    <label className={`calc-option ${pergolaType === 'klasyczna' ? 'active' : ''}`}>
+                      <input 
+                        type="radio" 
+                        name="pergola-type" 
+                        value="klasyczna" 
+                        checked={pergolaType === 'klasyczna'}
+                        onChange={() => setPergolaType('klasyczna')}
+                      />
+                      <div className="option-card">
+                        <div className="option-icon">
+                          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="8" y="20" width="32" height="20" fill="var(--gray-300)" opacity="0.5"/>
+                            <line x1="8" y1="20" x2="40" y2="20" stroke="var(--accent-main)" strokeWidth="3"/>
+                            <line x1="8" y1="20" x2="8" y2="40" stroke="var(--accent-main)" strokeWidth="3"/>
+                            <line x1="40" y1="20" x2="40" y2="40" stroke="var(--accent-main)" strokeWidth="3"/>
+                          </svg>
+                        </div>
+                        <span className="option-name">Klasyczna</span>
+                        <span className="option-price">od 12 900 zł</span>
+                      </div>
+                    </label>
+                    <label className={`calc-option ${pergolaType === 'bioklimatyczna' ? 'active' : ''}`}>
+                      <input 
+                        type="radio" 
+                        name="pergola-type" 
+                        value="bioklimatyczna"
+                        checked={pergolaType === 'bioklimatyczna'}
+                        onChange={() => setPergolaType('bioklimatyczna')}
+                      />
+                      <div className="option-card">
+                        <div className="option-icon">
+                          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="6" y="18" width="36" height="22" fill="var(--gray-300)" opacity="0.5"/>
+                            <line x1="6" y1="18" x2="42" y2="18" stroke="var(--accent-main)" strokeWidth="3"/>
+                            <line x1="6" y1="18" x2="6" y2="40" stroke="var(--accent-main)" strokeWidth="3"/>
+                            <line x1="42" y1="18" x2="42" y2="40" stroke="var(--accent-main)" strokeWidth="3"/>
+                            <rect x="10" y="20" width="6" height="3" fill="var(--gray-500)"/>
+                            <rect x="18" y="20" width="6" height="3" fill="var(--gray-500)"/>
+                            <rect x="26" y="20" width="6" height="3" fill="var(--gray-500)"/>
+                            <rect x="34" y="20" width="6" height="3" fill="var(--gray-500)"/>
+                          </svg>
+                        </div>
+                        <span className="option-name">Bioklimatyczna</span>
+                        <span className="option-price">od 24 900 zł</span>
+                      </div>
+                    </label>
+                    <label className={`calc-option ${pergolaType === 'wolnostojaca' ? 'active' : ''}`}>
+                      <input 
+                        type="radio" 
+                        name="pergola-type" 
+                        value="wolnostojaca"
+                        checked={pergolaType === 'wolnostojaca'}
+                        onChange={() => setPergolaType('wolnostojaca')}
+                      />
+                      <div className="option-card">
+                        <div className="option-icon">
+                          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 28 L24 16 L40 28" stroke="var(--accent-main)" strokeWidth="3" fill="none"/>
+                            <line x1="8" y1="28" x2="8" y2="40" stroke="var(--accent-main)" strokeWidth="3"/>
+                            <line x1="40" y1="28" x2="40" y2="40" stroke="var(--accent-main)" strokeWidth="3"/>
+                            <rect x="8" y="28" width="32" height="12" fill="var(--gray-300)" opacity="0.3"/>
+                          </svg>
+                        </div>
+                        <span className="option-name">Wolnostojąca</span>
+                        <span className="option-price">od 18 500 zł</span>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div className="calc-step">
+                <div className="calc-step-number">2</div>
+                <div className="calc-step-content">
+                  <h3>Podaj wymiary</h3>
+                  <div className="calc-dimensions">
+                    <div className="dimension-input">
+                      <label htmlFor="calc-width">Szerokość (m)</label>
+                      <div className="input-with-controls">
+                        <button type="button" className="dim-btn minus" onClick={() => setCalcWidth(w => Math.max(2, w - 0.5))}>−</button>
+                        <input 
+                          type="number" 
+                          id="calc-width" 
+                          min="2" 
+                          max="12" 
+                          step="0.5" 
+                          value={calcWidth}
+                          onChange={(e) => setCalcWidth(Number(e.target.value))}
+                        />
+                        <button type="button" className="dim-btn plus" onClick={() => setCalcWidth(w => Math.min(12, w + 0.5))}>+</button>
+                      </div>
+                      <span className="dimension-hint">2m - 12m</span>
+                    </div>
+                    <div className="dimension-input">
+                      <label htmlFor="calc-depth">Głębokość (m)</label>
+                      <div className="input-with-controls">
+                        <button type="button" className="dim-btn minus" onClick={() => setCalcDepth(d => Math.max(2, d - 0.5))}>−</button>
+                        <input 
+                          type="number" 
+                          id="calc-depth" 
+                          min="2" 
+                          max="8" 
+                          step="0.5" 
+                          value={calcDepth}
+                          onChange={(e) => setCalcDepth(Number(e.target.value))}
+                        />
+                        <button type="button" className="dim-btn plus" onClick={() => setCalcDepth(d => Math.min(8, d + 0.5))}>+</button>
+                      </div>
+                      <span className="dimension-hint">2m - 8m</span>
+                    </div>
+                    <div className="dimension-area">
+                      <span className="area-label">Powierzchnia</span>
+                      <span className="area-value">{calcArea} m²</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="calc-step">
+                <div className="calc-step-number">3</div>
+                <div className="calc-step-content">
+                  <h3>Wybierz opcje dodatkowe</h3>
+                  <div className="calc-extras">
+                    <label className={`extra-option ${extras.includes('led') ? 'active' : ''}`}>
+                      <input type="checkbox" name="extra" value="led" checked={extras.includes('led')} onChange={() => toggleExtra('led')} />
+                      <div className="extra-card">
+                        <div className="extra-icon">💡</div>
+                        <div className="extra-info">
+                          <span className="extra-name">Oświetlenie LED</span>
+                          <span className="extra-desc">Zintegrowane oświetlenie w konstrukcji</span>
+                        </div>
+                        <span className="extra-price">+2 500 zł</span>
+                      </div>
+                    </label>
+                    <label className={`extra-option ${extras.includes('heating') ? 'active' : ''}`}>
+                      <input type="checkbox" name="extra" value="heating" checked={extras.includes('heating')} onChange={() => toggleExtra('heating')} />
+                      <div className="extra-card">
+                        <div className="extra-icon">🔥</div>
+                        <div className="extra-info">
+                          <span className="extra-name">System grzewczy</span>
+                          <span className="extra-desc">Promienniki podczerwieni</span>
+                        </div>
+                        <span className="extra-price">+4 500 zł</span>
+                      </div>
+                    </label>
+                    <label className={`extra-option ${extras.includes('sides') ? 'active' : ''}`}>
+                      <input type="checkbox" name="extra" value="sides" checked={extras.includes('sides')} onChange={() => toggleExtra('sides')} />
+                      <div className="extra-card">
+                        <div className="extra-icon">🪟</div>
+                        <div className="extra-info">
+                          <span className="extra-name">Zabudowa boczna</span>
+                          <span className="extra-desc">Szklane lub aluminiowe panele</span>
+                        </div>
+                        <span className="extra-price">+8 000 zł</span>
+                      </div>
+                    </label>
+                    <label className={`extra-option ${extras.includes('blinds') ? 'active' : ''}`}>
+                      <input type="checkbox" name="extra" value="blinds" checked={extras.includes('blinds')} onChange={() => toggleExtra('blinds')} />
+                      <div className="extra-card">
+                        <div className="extra-icon">🎚️</div>
+                        <div className="extra-info">
+                          <span className="extra-name">Rolety ZIP</span>
+                          <span className="extra-desc">Ochrona przed słońcem i wiatrem</span>
+                        </div>
+                        <span className="extra-price">+3 500 zł</span>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="calculator-result">
+              <div className="result-card">
+                <div className="result-header">
+                  <h3>Szacunkowa wycena</h3>
+                  <span className="result-note">*Cena orientacyjna</span>
+                </div>
+                <div className="result-summary">
+                  <div className="summary-item">
+                    <span>Typ pergoli</span>
+                    <span>{pergolaType === 'klasyczna' ? 'Klasyczna' : pergolaType === 'bioklimatyczna' ? 'Bioklimatyczna' : 'Wolnostojąca'}</span>
+                  </div>
+                  <div className="summary-item">
+                    <span>Wymiary</span>
+                    <span>{calcWidth}m × {calcDepth}m</span>
+                  </div>
+                  <div className="summary-item">
+                    <span>Powierzchnia</span>
+                    <span>{calcArea} m²</span>
+                  </div>
+                  <div className="summary-item extras-summary">
+                    <span>Opcje dodatkowe</span>
+                    <span>{extras.length > 0 ? extras.length : '—'}</span>
+                  </div>
+                </div>
+                <div className="result-price">
+                  <span className="price-label">Cena od</span>
+                  <span className="price-value">{totalPrice.toLocaleString('pl-PL')}</span>
+                  <span className="price-currency">zł</span>
+                </div>
+                <p className="result-disclaimer">Ostateczna cena może się różnić w zależności od indywidualnych wymagań i warunków montażu.</p>
+                <a href="#contact" className="btn btn-primary btn-full">Zamów dokładną wycenę</a>
+                <button type="button" className="btn btn-secondary btn-full" onClick={resetCalculator}>Resetuj kalkulator</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Gallery Section */}
       <section className="gallery" id="gallery">
         <div className="container">
@@ -312,76 +586,36 @@ export default function HomePage() {
             <p className="section-subtitle">Zobacz jak zmieniamy przestrzenie naszych klientów</p>
           </div>
           <div className="gallery-grid">
-            <div className="gallery-item large">
-              <div className="gallery-placeholder">
-                <svg viewBox="0 0 600 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="600" height="400" fill="#f1f3f4"/>
-                  <rect x="50" y="150" width="500" height="200" fill="#dee2e6" opacity="0.5"/>
-                  <line x1="50" y1="150" x2="550" y2="150" stroke="#495057" strokeWidth="6"/>
-                  <line x1="50" y1="150" x2="50" y2="350" stroke="#495057" strokeWidth="6"/>
-                  <line x1="550" y1="150" x2="550" y2="350" stroke="#495057" strokeWidth="6"/>
-                  <rect x="100" y="280" width="80" height="70" fill="#6c757d"/>
-                  <rect x="420" y="280" width="80" height="70" fill="#6c757d"/>
-                  <circle cx="500" cy="80" r="40" fill="#b87333"/>
-                  <text x="300" y="250" textAnchor="middle" fill="#343a40" fontSize="20">Realizacja Premium</text>
-                </svg>
-              </div>
+            <div className="gallery-item large" onClick={() => setLightboxImage('/images/bioklimatyczna.jpeg')}>
+              <img src="/images/bioklimatyczna.jpeg" alt="Pergola bioklimatyczna - realizacja premium" className="gallery-image" />
               <div className="gallery-overlay">
                 <h4>Villa Nowoczesna</h4>
                 <p>Pergola bioklimatyczna 6x4m</p>
               </div>
             </div>
-            <div className="gallery-item">
-              <div className="gallery-placeholder">
-                <svg viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="300" height="300" fill="#f8f9fa"/>
-                  <rect x="30" y="120" width="240" height="150" fill="#dee2e6" opacity="0.5"/>
-                  <line x1="30" y1="120" x2="270" y2="120" stroke="#adb5bd" strokeWidth="4"/>
-                  <text x="150" y="200" textAnchor="middle" fill="#495057" fontSize="16">Taras klasyczny</text>
-                </svg>
-              </div>
+            <div className="gallery-item" onClick={() => setLightboxImage('/images/taras-klasyczny.jpeg')}>
+              <img src="/images/taras-klasyczny.jpeg" alt="Taras klasyczny z pergolą" className="gallery-image" />
               <div className="gallery-overlay">
                 <h4>Dom Jednorodzinny</h4>
                 <p>Pergola klasyczna 4x3m</p>
               </div>
             </div>
-            <div className="gallery-item">
-              <div className="gallery-placeholder">
-                <svg viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="300" height="300" fill="#f1f3f4"/>
-                  <rect x="30" y="100" width="240" height="170" fill="#ced4da" opacity="0.5"/>
-                  <line x1="30" y1="100" x2="270" y2="100" stroke="#495057" strokeWidth="4"/>
-                  <text x="150" y="190" textAnchor="middle" fill="#343a40" fontSize="16">Ogród z basenem</text>
-                </svg>
-              </div>
+            <div className="gallery-item" onClick={() => setLightboxImage('/images/dom-z-basenem.jpeg')}>
+              <img src="/images/dom-z-basenem.jpeg" alt="Dom z basenem i pergolą" className="gallery-image" />
               <div className="gallery-overlay">
                 <h4>Strefa Relaksu</h4>
                 <p>Pergola wolnostojąca 5x5m</p>
               </div>
             </div>
-            <div className="gallery-item">
-              <div className="gallery-placeholder">
-                <svg viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="300" height="300" fill="#f8f9fa"/>
-                  <rect x="20" y="110" width="260" height="160" fill="#dee2e6" opacity="0.5"/>
-                  <line x1="20" y1="110" x2="280" y2="110" stroke="#6c757d" strokeWidth="4"/>
-                  <text x="150" y="195" textAnchor="middle" fill="#495057" fontSize="16">Restauracja</text>
-                </svg>
-              </div>
+            <div className="gallery-item" onClick={() => setLightboxImage('/images/restauracja.jpeg')}>
+              <img src="/images/restauracja.jpeg" alt="Pergola w restauracji" className="gallery-image" />
               <div className="gallery-overlay">
                 <h4>Restauracja Green</h4>
                 <p>Pergola bioklimatyczna 8x6m</p>
               </div>
             </div>
-            <div className="gallery-item">
-              <div className="gallery-placeholder">
-                <svg viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="300" height="300" fill="#f1f3f4"/>
-                  <rect x="40" y="130" width="220" height="140" fill="#ced4da" opacity="0.5"/>
-                  <line x1="40" y1="130" x2="260" y2="130" stroke="#adb5bd" strokeWidth="4"/>
-                  <text x="150" y="205" textAnchor="middle" fill="#343a40" fontSize="16">Penthouse</text>
-                </svg>
-              </div>
+            <div className="gallery-item" onClick={() => setLightboxImage('/images/penthouse.jpeg')}>
+              <img src="/images/penthouse.jpeg" alt="Pergola na tarasie penthouse" className="gallery-image" />
               <div className="gallery-overlay">
                 <h4>Apartament Premium</h4>
                 <p>Pergola na tarasie 3x4m</p>
@@ -524,7 +758,7 @@ export default function HomePage() {
                 </div>
                 <div>
                   <h4>Email</h4>
-                  <p><a href="mailto:kontakt@pergomet.pl">kontakt@pergomet.pl</a></p>
+                  <p><a href="mailto:kontakt@alukomfort.pl">kontakt@alukomfort.pl</a></p>
                 </div>
               </div>
               <div className="contact-item">
@@ -598,7 +832,7 @@ export default function HomePage() {
             <div className="footer-brand">
               <a href="#" className="logo">
                 <span className="logo-icon">⌂</span>
-                PergoMet
+                Alukomfort
               </a>
               <p>Nowoczesne pergole metalowe dla wymagających. Jakość, profesjonalizm i elegancja od 2012 roku.</p>
               <div className="social-links">
@@ -654,10 +888,18 @@ export default function HomePage() {
             </div>
           </div>
           <div className="footer-bottom">
-            <p>&copy; 2024 PergoMet. Wszystkie prawa zastrzeżone.</p>
+            <p>&copy; 2024 Alukomfort. Wszystkie prawa zastrzeżone.</p>
           </div>
         </div>
       </footer>
+
+      {/* Lightbox Modal */}
+      {lightboxImage && (
+        <div className="lightbox" onClick={() => setLightboxImage(null)}>
+          <button className="lightbox-close" onClick={() => setLightboxImage(null)}>×</button>
+          <img src={lightboxImage} alt="Powiększone zdjęcie" className="lightbox-image" />
+        </div>
+      )}
     </>
   )
 }

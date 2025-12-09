@@ -1,7 +1,7 @@
 {
-  "name": "pergomet-portal",
+  "name": "alukomfort-portal",
   "version": "1.0.0",
-  "description": "Portal PergoMet - konfigurator pergol z wizualizacją AI",
+  "description": "Portal Alukomfort - konfigurator pergol z wizualizacją AI",
   "private": true,
   "scripts": {
     "dev": "next dev",
