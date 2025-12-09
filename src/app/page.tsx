@@ -6,6 +6,7 @@ export default function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null)
+  const [isNightMode, setIsNightMode] = useState(false)
 
   // Navbar scroll effect
   useEffect(() => {
@@ -108,7 +109,9 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <section className="hero" id="home">
-        <div className="hero-bg"></div>
+        <div className="hero-bg-day" style={{ backgroundImage: 'url(/images/pergola_hero_1.jpeg)' }}></div>
+        <div className={`hero-bg-night ${isNightMode ? 'active' : ''}`} style={{ backgroundImage: 'url(/images/pergola_hero_2.jpeg)' }}></div>
+        <div className="hero-overlay"></div>
         <div className="container">
           <div className="hero-content">
             <h1 className="hero-title">
@@ -123,25 +126,19 @@ export default function HomePage() {
               <a href="#contact" className="btn btn-primary">Bezpłatna wycena</a>
               <a href="#products" className="btn btn-secondary">Zobacz ofertę</a>
             </div>
-            <div className="hero-stats">
-              <div className="stat">
-                <span className="stat-number" data-target="500">0</span>+
-                <span className="stat-label">Realizacji</span>
-              </div>
-              <div className="stat">
-                <span className="stat-number" data-target="12">0</span>
-                <span className="stat-label">Lat doświadczenia</span>
-              </div>
-              <div className="stat">
-                <span className="stat-number" data-target="98">0</span>%
-                <span className="stat-label">Zadowolonych klientów</span>
-              </div>
-            </div>
-          </div>
-          <div className="hero-image">
-            <img src="/images/hero.jpg" alt="Nowoczesna pergola metalowa na tarasie domu jednorodzinnego" className="hero-img" />
           </div>
         </div>
+        
+        {/* Day/Night Toggle */}
+        <button 
+          className={`day-night-toggle ${isNightMode ? 'night' : ''}`}
+          onClick={() => setIsNightMode(!isNightMode)}
+          aria-label={isNightMode ? 'Przełącz na dzień' : 'Przełącz na noc'}
+        >
+          <span className="toggle-icon sun">☀️</span>
+          <span className="toggle-icon moon">🌙</span>
+        </button>
+        
         <div className="scroll-indicator">
           <span>Przewiń w dół</span>
           <div className="mouse"></div>
