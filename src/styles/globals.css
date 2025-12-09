@@ -1856,24 +1856,28 @@ section {
     }
 
     .day-night-toggle {
-        top: 85px;
+        top: auto;
+        bottom: var(--spacing-xl);
         right: var(--spacing-md);
-        width: 48px;
-        height: 26px;
+        width: 56px;
+        height: 30px;
+        background: rgba(0, 0, 0, 0.5);
     }
 
     .toggle-sun,
     .toggle-moon {
-        font-size: 0.7rem;
+        font-size: 0.85rem;
     }
 
     .toggle-slider {
-        width: 20px;
-        height: 20px;
+        top: 4px;
+        left: 4px;
+        width: 22px;
+        height: 22px;
     }
 
     .day-night-toggle.night .toggle-slider {
-        transform: translateX(22px);
+        transform: translateX(26px);
     }
 
     /* Sections */
@@ -2209,24 +2213,26 @@ section {
     }
 
     .day-night-toggle {
-        top: 80px;
+        bottom: var(--spacing-lg);
         right: var(--spacing-sm);
-        width: 44px;
-        height: 24px;
+        width: 52px;
+        height: 28px;
     }
 
     .toggle-sun,
     .toggle-moon {
-        font-size: 0.65rem;
+        font-size: 0.8rem;
     }
 
     .toggle-slider {
-        width: 18px;
-        height: 18px;
+        top: 3px;
+        left: 3px;
+        width: 22px;
+        height: 22px;
     }
 
     .day-night-toggle.night .toggle-slider {
-        transform: translateX(20px);
+        transform: translateX(24px);
     }
 
     /* Sections */
