@@ -370,52 +370,63 @@ h1, h2, h3, h4, h5, h6 {
 /* Day/Night Toggle Button */
 .day-night-toggle {
     position: absolute;
-    bottom: 100px;
+    top: 95px;
     right: var(--spacing-xl);
     z-index: 10;
-    width: 60px;
-    height: 60px;
+    width: 52px;
+    height: 28px;
     border-radius: var(--radius-full);
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
-    justify-content: center;
-    transition: all var(--transition-base);
-    overflow: hidden;
+    justify-content: space-between;
+    padding: 0 5px;
 }
 
 .day-night-toggle:hover {
-    background: rgba(255, 255, 255, 0.25);
-    transform: scale(1.1);
+    background: rgba(0, 0, 0, 0.4);
 }
 
-.toggle-icon {
+.toggle-sun,
+.toggle-moon {
+    font-size: 0.8rem;
+    z-index: 2;
+    transition: opacity 0.3s ease;
+}
+
+.toggle-sun {
+    opacity: 1;
+}
+
+.toggle-moon {
+    opacity: 0.4;
+}
+
+.day-night-toggle.night .toggle-sun {
+    opacity: 0.4;
+}
+
+.day-night-toggle.night .toggle-moon {
+    opacity: 1;
+}
+
+.toggle-slider {
     position: absolute;
-    font-size: 1.75rem;
-    transition: all 0.5s ease;
+    top: 3px;
+    left: 3px;
+    width: 22px;
+    height: 22px;
+    background: var(--white);
+    border-radius: var(--radius-full);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
 }
 
-.toggle-icon.sun {
-    opacity: 1;
-    transform: translateY(0) rotate(0deg);
-}
-
-.toggle-icon.moon {
-    opacity: 0;
-    transform: translateY(20px) rotate(-90deg);
-}
-
-.day-night-toggle.night .toggle-icon.sun {
-    opacity: 0;
-    transform: translateY(-20px) rotate(90deg);
-}
-
-.day-night-toggle.night .toggle-icon.moon {
-    opacity: 1;
-    transform: translateY(0) rotate(0deg);
+.day-night-toggle.night .toggle-slider {
+    transform: translateX(24px);
 }
 
 .hero .container {
@@ -1815,14 +1826,24 @@ section {
     }
 
     .day-night-toggle {
-        bottom: 80px;
+        top: 85px;
         right: var(--spacing-md);
-        width: 50px;
-        height: 50px;
+        width: 48px;
+        height: 26px;
     }
 
-    .toggle-icon {
-        font-size: 1.4rem;
+    .toggle-sun,
+    .toggle-moon {
+        font-size: 0.7rem;
+    }
+
+    .toggle-slider {
+        width: 20px;
+        height: 20px;
+    }
+
+    .day-night-toggle.night .toggle-slider {
+        transform: translateX(22px);
     }
 
     .section-title {
@@ -1923,14 +1944,24 @@ section {
     }
 
     .day-night-toggle {
-        bottom: 70px;
+        top: 80px;
         right: var(--spacing-sm);
         width: 44px;
-        height: 44px;
+        height: 24px;
     }
 
-    .toggle-icon {
-        font-size: 1.2rem;
+    .toggle-sun,
+    .toggle-moon {
+        font-size: 0.65rem;
+    }
+
+    .toggle-slider {
+        width: 18px;
+        height: 18px;
+    }
+
+    .day-night-toggle.night .toggle-slider {
+        transform: translateX(20px);
     }
 
     .product-footer {

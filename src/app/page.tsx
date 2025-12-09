@@ -130,7 +130,6 @@ export default function HomePage() {
       <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`} id="navbar">
         <div className="container">
           <a href="#" className="logo">
-            <span className="logo-icon">⌂</span>
             Alukomfort
           </a>
           <button
@@ -184,8 +183,9 @@ export default function HomePage() {
           onClick={() => setIsNightMode(!isNightMode)}
           aria-label={isNightMode ? 'Przełącz na dzień' : 'Przełącz na noc'}
         >
-          <span className="toggle-icon sun">☀️</span>
-          <span className="toggle-icon moon">🌙</span>
+          <span className="toggle-sun">☀️</span>
+          <span className="toggle-moon">🌙</span>
+          <span className="toggle-slider"></span>
         </button>
         
         <div className="scroll-indicator">
